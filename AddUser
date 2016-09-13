@@ -1,0 +1,49 @@
+#!/usr/bin/env php
+<?php declare(strict_types = 1);
+/**
+ * Created by PhpStorm.
+ * User: lelouch
+ * Date: 13/9/16
+ * Time: 6:46 PM
+ */
+
+echo "You Are Now Going To Register A New User To FileFiddle, Who Can Modify Your System. Beware.\nUsername: ";
+fscanf(STDIN, "%s\n", $username);
+function prompt_silent($prompt = "Password (Typing will be hidden):")
+{
+    if (preg_match('/^win/i', PHP_OS)) {
+        $vbscript = sys_get_temp_dir() . 'prompt_password.vbs';
+        file_put_contents(
+            $vbscript, 'wscript.echo(InputBox("'
+            . addslashes($prompt)
+            . '", "", "password here"))');
+        $command = "cscript //nologo " . escapeshellarg($vbscript);
+        $password = rtrim(shell_exec($command));
+        unlink($vbscript);
+        return $password;
+    } else {
+        $command = "/usr/bin/env bash -c 'echo OK'";
+        if (rtrim(shell_exec($command)) !== 'OK') {
+            trigger_error("Can't invoke bash");
+            return;
+        }
+        $command = "/usr/bin/env bash -c 'read -s -p \""
+            . addslashes($prompt)
+            . "\" mypassword && echo \$mypassword'";
+        $password = rtrim(shell_exec($command));
+        echo "\n";
+        return $password;
+    }
+}
+
+$password = prompt_silent();
+
+function store(string $username, string $password) {
+    $fileLocation = __DIR__ . "/src/Storage/UserNamePasswordKV.json";
+    $file = file_get_contents($fileLocation);
+    $json = json_decode($file, true);
+    $json[$username] = password_hash($password, PASSWORD_DEFAULT);
+    file_put_contents($fileLocation, json_encode($json, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
+}
+
+store($username, $password);
