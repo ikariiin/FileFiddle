@@ -1,0 +1,65 @@
+<main class="content">
+    <div class="progress-circular" id="progressIPageLoad">
+        <div class="progress-circular-wrapper">
+            <div class="progress-circular-inner">
+                <div class="progress-circular-left">
+                    <div class="progress-circular-spinner"></div>
+                </div>
+                <div class="progress-circular-gap"></div>
+                <div class="progress-circular-right">
+                    <div class="progress-circular-spinner"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h4>Currently opened: <span id="folderPath"></span></h4>
+        <div class="row" id="table-card">
+            <div class="card">
+                <div class="card-main">
+                    <div class="card-inner margin-bottom-no">
+                        <div id="goBack">
+                            <button class="pull-left btn-flat btn btn-block waves-attach waves-dark" onclick="window.location = window.history.back()">&larr; Go Back</button>
+                            <br>
+                            <br>
+                        </div>
+                        <p class="card-heading">
+                            Folder Content
+                        </p>
+                        <div class="card-table">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Select</th>
+                                        <th>File/Folder Name</th>
+                                        <th>File/Folder Size (MiB)</th>
+                                        <th>Last Modified (Hour:Minute:Second)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tableContent">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="file-viewer">
+            <button class="pull-left btn-flat btn btn-block waves-attach waves-dark" onclick="window.location = window.history.back()">&larr; Go Back</button>
+            <br>
+            <br>
+            <div id="fileDetails"></div>
+            <div id="content-container"></div>
+            <div class="row text-center ">
+                <button class="margin-bottom-lg btn btn-brand waves-attach waves-light" id="saveButton">
+                    <i class="icon">save</i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+index_JS();
+</script>

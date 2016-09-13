@@ -1,0 +1,145 @@
+@import 'https://fonts.googleapis.com/css?family=Nova+Mono';
+.pace {
+    -webkit-pointer-events: none;
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.pace-inactive {
+    display: none;
+}
+
+.pace .pace-progress {
+    background: #1DE9B6;
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    right: 100%;
+    width: 100%;
+    height: 2px;
+}
+
+.pace .pace-progress-inner {
+    display: block;
+    position: absolute;
+    right: 0px;
+    width: 100px;
+    height: 100%;
+    box-shadow: 0 0 10px #1DE9B6, 0 0 5px #1DE9B6;
+    opacity: 1.0;
+    -webkit-transform: rotate(3deg) translate(0px, -4px);
+    -moz-transform: rotate(3deg) translate(0px, -4px);
+    -ms-transform: rotate(3deg) translate(0px, -4px);
+    -o-transform: rotate(3deg) translate(0px, -4px);
+    transform: rotate(3deg) translate(0px, -4px);
+}
+
+.pace .pace-activity {
+    display: block;
+    position: fixed;
+    z-index: 2000;
+    top: 15px;
+    right: 15px;
+    width: 14px;
+    height: 14px;
+    border: solid 2px transparent;
+    border-top-color: #1DE9B6;
+    border-left-color: #1DE9B6;
+    border-radius: 10px;
+    -webkit-animation: pace-spinner 400ms linear infinite;
+    -moz-animation: pace-spinner 400ms linear infinite;
+    -ms-animation: pace-spinner 400ms linear infinite;
+    -o-animation: pace-spinner 400ms linear infinite;
+    animation: pace-spinner 400ms linear infinite;
+}
+
+@-webkit-keyframes pace-spinner {
+    0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@-moz-keyframes pace-spinner {
+    0% { -moz-transform: rotate(0deg); transform: rotate(0deg); }
+    100% { -moz-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@-o-keyframes pace-spinner {
+    0% { -o-transform: rotate(0deg); transform: rotate(0deg); }
+    100% { -o-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@-ms-keyframes pace-spinner {
+    0% { -ms-transform: rotate(0deg); transform: rotate(0deg); }
+    100% { -ms-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@keyframes pace-spinner {
+    0% { transform: rotate(0deg); transform: rotate(0deg); }
+    100% { transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+#folderPath {
+    color: #9C27B0;
+    font-weight: 200;
+    font-family: monospace;
+    font-size: 15px;
+    display: block;
+    padding: 4px;
+    background: #e6e6e6;
+}
+
+::selection {
+    background: #009688;
+    color: #FFFFFF;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #070707;
+}
+
+#table-card {
+    display: block;
+}
+#file-viewer {
+    display: none;
+}
+
+.fileContent {
+    height: 500px;
+    width: 100%;
+}
+
+#progressIPageLoad {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    display: none;
+    z-index: 1000;
+}
+
+textarea.fileContent {
+    width: 100%;
+    height: 560px;
+    font-family: "Nova Mono", monospace;
+    line-height: 1.5;
+    font-size: 13px;
+    color: #FFFFFF;
+    background: #212121;
+    overflow: auto;
+    max-width: 100%;
+    margin-bottom: 50px;
+    outline: none;
+    border-radius: 4px;
+    transition: 0.4s all;
+    padding: 10px;
+}
+
+textarea.fileContent:focus {
+    box-shadow: 0 5px 6px rgba(0, 0, 0, 0.8);
+}
