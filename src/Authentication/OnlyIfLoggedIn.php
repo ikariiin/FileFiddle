@@ -8,21 +8,23 @@
 
 namespace FileFiddle\Authentication;
 use Aerys\Request;
+use Aerys\Response;
 use FileFiddle\Application\Keys\CookieKeys;
 
 class OnlyIfLoggedIn {
     private $request;
 
-    public function __construct(Request $request) {
+    public function __construct(Request $request, Response $response) {
         $this->request = $request;
+        $this->response = $response;
     }
 
     public function if() {
         $isLoggedIn = $this->request->getCookie(CookieKeys::IS_LOGGED_IN);
         if($isLoggedIn === null || (bool) $isLoggedIn === false) {
-            $this->request->addHeader("Location", "/login.html");
-            $this->request->setStatus(302);
-            $this->request->end();
+            $this->response->addHeader("Location", "/login.html");
+            $this->response->setStatus(302);
+            $this->response->end();
             return;
         }
     }

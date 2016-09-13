@@ -23,7 +23,7 @@ $router = Aerys\router()
         $response->end();
         return;
     })->route("GET", "/", function (\Aerys\Request $request, \Aerys\Response $response) {
-        (new \FileFiddle\Authentication\OnlyIfLoggedIn($request))
+        (new \FileFiddle\Authentication\OnlyIfLoggedIn($request, $response))
             ->if();
 
         $header = \FileFiddle\Application\TemplateLoader::loadHeaders("Main Page");
@@ -34,7 +34,7 @@ $router = Aerys\router()
     });
 
 $router->route("POST", "/getFolders", function (\Aerys\Request $request, \Aerys\Response $response) {
-    (new \FileFiddle\Authentication\OnlyIfLoggedIn($request))
+    (new \FileFiddle\Authentication\OnlyIfLoggedIn($request, $response))
         ->if();
 
     $response->setHeader("Content-Type", "application/json");
@@ -55,7 +55,7 @@ $router->route("POST", "/getFolders", function (\Aerys\Request $request, \Aerys\
     $response->end((new \FileFiddle\Application\Apis\GetDefaultDir((yield \Aerys\parseBody($request)), $request->getAllParams()))
         ->getRawData());
 })->route("POST", "/getFileDetails", function (\Aerys\Request $request, \Aerys\Response $response) {
-    (new \FileFiddle\Authentication\OnlyIfLoggedIn($request))
+    (new \FileFiddle\Authentication\OnlyIfLoggedIn($request, $response))
         ->if();
 
     $response->setHeader("Content-Type", "application/json");
@@ -72,7 +72,7 @@ $router->route("POST", "/getFolders", function (\Aerys\Request $request, \Aerys\
         return;
     }
 })->route("POST", "/saveFile", function (\Aerys\Request $request, \Aerys\Response $response) {
-    (new \FileFiddle\Authentication\OnlyIfLoggedIn($request))
+    (new \FileFiddle\Authentication\OnlyIfLoggedIn($request, $response))
         ->if();
 
     $response->setHeader("Content-Type", "application/json");
