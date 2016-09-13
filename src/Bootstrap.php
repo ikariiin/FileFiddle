@@ -51,7 +51,7 @@ $router->route("POST", "/getFolders", function (\Aerys\Request $request, \Aerys\
     }
 })->route("GET", "/getDefaultDir", function (\Aerys\Request $request, \Aerys\Response $response) {
     $response->setHeader("Content-Type", "application/json");
-    
+
     $response->end((new \FileFiddle\Application\Apis\GetDefaultDir((yield \Aerys\parseBody($request)), $request->getAllParams()))
         ->getRawData());
 })->route("POST", "/getFileDetails", function (\Aerys\Request $request, \Aerys\Response $response) {

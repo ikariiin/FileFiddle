@@ -163,10 +163,9 @@ var file = {
                 '</div>' +
                 '</div>' +
                 '</div>');
-
             $("#saveButton").on("click", function () {
                 $("#progressIPageLoad").show(100);
-                $.post("/saveFile", {fileName: fileName, content: $("#fileContent").val()}, function (status) {
+                $.post("/saveFile", {fileName: $("#folderPath").text(), content: $("#fileContent").val()}, function (status) {
                     $("#progressIPageLoad").hide(100);
                     if(status.status) {
                         $("body").snackbar({
