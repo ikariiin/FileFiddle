@@ -19,8 +19,9 @@ class Executor {
     }
 
     public function run(): self {
-        $output = trim(shell_exec($this->command));
-        $this->output = $output;
+        $output = shell_exec($this->command);
+        $this->output = $output ?? "";
+        $this->output = trim($this->output);
         return $this;
     }
 

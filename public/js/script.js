@@ -48,7 +48,14 @@ var Terminal = {
         }
     },
     sendExecuteSignal: function () {
-        console.log($("#" + this.textareaId).val().split("\n").pop());
+        var $console = $("#" + this.textareaId);
+        var command = $console.val().split("\n").pop().replace("[" + username + "@" + machineName + "] $ ", "");
+        $.post("/executeCommand", {command: command}, function (output) {
+            $console.val($console.val() + "\n" + output.output + "\n" + "[" + username + "@" + machineName + "] $ ");
+            $console.animate({
+                scrollTop:$console[0].scrollHeight - $console.height()
+            }, 1000);
+        });
     }
 };
 
@@ -158,7 +165,6 @@ var navigation = {
                 file.open(value);
             }
         }
-        Caret.setTextAreasOnFocus();
     }
 };
 
@@ -275,10 +281,10 @@ var Editor = {
     },
 
     maintainIndentation: function () {
-        var prevLineNo = $("#fileContent").val().substr(0, $("#fileContent").prop("selectionStart")).split("\n").length - 2;
-        var prevLine = $("#fileContent").val().split("\n")[prevLineNo];
+        var prevLineNo = $("#fileContent").val().substr(0, $("#fileContent").prop("selectionStart")).split("\n").length - 1;
+        var prevLine = $("#fileContent").val().split("\n")[((prevLineNo != -1) ? prevLineNo : 0)];
         var indentLevel = prevLine.match(/^\s*/)[0]
-        this.insertAtCaret("fileContent", indentLevel);
+        this.insertAtCaret("fileContent", "\n" + indentLevel);
     }
 };
 
@@ -292,22 +298,26 @@ var keysDown = {
                 Editor.insertAtCaret("fileContent", "    ");
             }
         } else if(keyCode == 13) {
-            Terminal.sendExecuteSignal();
+            if($("#fileContent").length > 0 && !$("a[href='#terminal']").parent().hasClass("active")) {
+                Editor.maintainIndentation();
+            } else {
+                //Terminal.sendExecuteSignal();
+            }
             e.preventDefault();
             return false;
+        } else if(keyCode == 8) {
+            if($("#terminal-console").is(":focus")) {
+                var $console = $("#terminal-console");
+                var wholeVal = $console.val();
+                var currentLine = $console.val().split("\n").pop();
+                e.preventDefault();
+                return false;
+            }
         } else if(typeof(ARROWS[keyCode]) != "undefined") {
-            Terminal.triggerArrHandler(ARROWS[keyCode]);
-        }
-    }
-};
-
-var keysUp = {
-    handler: function (e) {
-        var keyCode = e.keyCode || e.which;
-
-        if(keyCode == 13) {
-            if($("#fileContent").length > 0) {
-                Editor.maintainIndentation();
+            if($("#terminal-console").is(":focus")) {
+                Terminal.triggerArrHandler(ARROWS[keyCode]);
+                e.preventDefault();
+                return false;
             }
         }
     }
@@ -319,12 +329,25 @@ var index_JS = function () {
     window.onload = navigation.onload;
     $(window).on("hashchange", navigation.onhashchange);
     window.onkeydown = keysDown.handler;
-    window.onkeyup = keysUp.handler;
 
     $.get("/getUsernameAndMachineName", function (usernameAndMachineName) {
         username = usernameAndMachineName.username;
         machineName = usernameAndMachineName.machineName;
 
-        Terminal.init("terminal-console");
+        //Terminal.init("terminal-console");
+        $("#terminal-console").terminal(function(command, term) {
+            if (command !== '') {
+                $.post("/executeCommand", {command: command}, function (output) {
+                    term.echo(output.output);
+                });
+            } else {
+                term.echo('');
+            }
+        }, {
+            greetings: '',
+            name: 'terminal',
+            height: 360,
+            prompt: "[" + username + "@" + machineName + "] $ "
+        });
     });
 };
