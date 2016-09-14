@@ -2,12 +2,56 @@
  * Created by lelouch on 11/9/16.
  */
 
-const EXT_MODE = {
-    "php": "php",
-    "js": "javascript",
-    "txt": "text",
-    "": "text"
+const ARROWS = {
+    37: "LeftArr",
+    38: "UpArr",
+    39: "RightArr",
+    40: "DownArr"
 };
+
+var Caret = {
+    setCaretPosition: function (elemId, caretPos) {
+        var elem = document.getElementById(elemId);
+
+        if(elem != null) {
+            if(elem.createTextRange) {
+                var range = elem.createTextRange();
+                range.move('character', caretPos);
+                range.select();
+            }
+            else {
+                elem.focus();
+                elem.setSelectionRange(caretPos, caretPos);
+            }
+        }
+    },
+    setTextAreasOnFocus: function () {
+        /***
+         * This function will force the cursor to be positioned
+         * at the end of all textareas when they receive focus.
+         */
+
+        $("#terminal-console").on("click", function (e) {
+            Caret.setCaretPosition(this.id, this.value.length);
+        });
+    }
+};
+
+var Terminal = {
+    init: function(textareaId) {
+        this.textareaId = textareaId;
+        $("#" + textareaId).text("[" + username + "@" + machineName + "] $ ");
+    },
+    triggerArrHandler: function (arr) {
+        if($("#" + this.textareaId).is(":focus")) {
+            //
+        }
+    },
+    sendExecuteSignal: function () {
+        console.log($("#" + this.textareaId).val().split("\n").pop());
+    }
+};
+
 var dir = {
     list: function (dir) {
         $("#progressIPageLoad").show(100);
@@ -114,6 +158,7 @@ var navigation = {
                 file.open(value);
             }
         }
+        Caret.setTextAreasOnFocus();
     }
 };
 
@@ -246,6 +291,12 @@ var keysDown = {
                 e.preventDefault();
                 Editor.insertAtCaret("fileContent", "    ");
             }
+        } else if(keyCode == 13) {
+            Terminal.sendExecuteSignal();
+            e.preventDefault();
+            return false;
+        } else if(typeof(ARROWS[keyCode]) != "undefined") {
+            Terminal.triggerArrHandler(ARROWS[keyCode]);
         }
     }
 };
@@ -255,14 +306,25 @@ var keysUp = {
         var keyCode = e.keyCode || e.which;
 
         if(keyCode == 13) {
-            Editor.maintainIndentation();
+            if($("#fileContent").length > 0) {
+                Editor.maintainIndentation();
+            }
         }
     }
 };
+
+var username, machineName;
 
 var index_JS = function () {
     window.onload = navigation.onload;
     $(window).on("hashchange", navigation.onhashchange);
     window.onkeydown = keysDown.handler;
     window.onkeyup = keysUp.handler;
+
+    $.get("/getUsernameAndMachineName", function (usernameAndMachineName) {
+        username = usernameAndMachineName.username;
+        machineName = usernameAndMachineName.machineName;
+
+        Terminal.init("terminal-console");
+    });
 };

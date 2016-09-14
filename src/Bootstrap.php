@@ -88,6 +88,40 @@ $router->route("POST", "/getFolders", function (\Aerys\Request $request, \Aerys\
         ]));
         return;
     }
+})->route("POST", "/executeCommand", function (\Aerys\Request $request, \Aerys\Response $response) {
+    (new \FileFiddle\Authentication\OnlyIfLoggedIn($request, $response))
+        ->if();
+
+    $response->setHeader("Content-Type", "application/json");
+
+    try {
+        $response->end((new \FileFiddle\Application\Apis\ExecuteCommand((yield \Aerys\parseBody($request)), $request->getAllParams()))
+            ->getRawData());
+        return;
+    } catch (\Exception $ex) {
+        $response->end(json_encode([
+            "status" => "failure",
+            "message" => $ex->getMessage()
+        ]));
+        return;
+    }
+})->route("GET", "/getUsernameAndMachineName", function (\Aerys\Request $request, \Aerys\Response $response) {
+    (new \FileFiddle\Authentication\OnlyIfLoggedIn($request, $response))
+        ->if();
+
+    $response->setHeader("Content-Type", "application/json");
+
+    try {
+        $response->end((new \FileFiddle\Application\Apis\GetUsernameAndMachineName((yield \Aerys\parseBody($request)), $request->getAllParams()))
+            ->getRawData());
+        return;
+    } catch (\Exception $ex) {
+        $response->end(json_encode([
+            "status" => "failure",
+            "message" => $ex->getMessage()
+        ]));
+        return;
+    }
 });
 
 (new Aerys\Host)

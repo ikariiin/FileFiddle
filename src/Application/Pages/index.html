@@ -13,53 +13,70 @@
         </div>
     </div>
     <div class="container">
-        <h4>Currently opened: <span id="folderPath"></span></h4>
-        <div class="row" id="table-card">
-            <div class="card">
-                <div class="card-main">
-                    <div class="card-inner margin-bottom-no">
-                        <div id="goBack">
-                            <button class="pull-left btn-flat btn btn-block waves-attach waves-dark" onclick="window.location = window.history.back()">&larr; Go Back</button>
-                            <br>
-                            <br>
-                        </div>
-                        <p class="card-heading">
-                            Folder Content
-                        </p>
-                        <div class="card-table">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th>Select</th>
-                                        <th>File/Folder Name</th>
-                                        <th>File/Folder Size (MiB)</th>
-                                        <th>Last Modified (Hour:Minute:Second)</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="tableContent">
-                                    </tbody>
-                                </table>
+        <nav class="tab-nav">
+            <ul class="nav nav-justified">
+                <li class="active">
+                    <a data-toggle="tab" href="#dirAndFileContainer">File And Folder Viewer</a>
+                </li>
+                <li><a data-toggle="tab" href="#terminal">Terminal / Console</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="tab-content">
+        <div class="container tab-pane fade in active" id="dirAndFileContainer">
+            <h4>Currently opened: <span id="folderPath"></span></h4>
+            <div class="row" id="table-card">
+                <div class="card">
+                    <div class="card-main">
+                        <div class="card-inner margin-bottom-no">
+                            <div id="goBack">
+                                <button class="pull-left btn-flat btn btn-block waves-attach waves-dark" onclick="window.location = window.history.back()">&larr; Go Back</button>
+                                <br>
+                                <br>
+                            </div>
+                            <p class="card-heading">
+                                Folder Content
+                            </p>
+                            <div class="card-table">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Select</th>
+                                            <th>File/Folder Name</th>
+                                            <th>File/Folder Size (MiB)</th>
+                                            <th>Last Modified (Hour:Minute:Second)</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tableContent">
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row" id="file-viewer">
-            <button class="pull-left btn-flat btn btn-block waves-attach waves-dark" onclick="window.location = window.history.back()">&larr; Go Back</button>
-            <br>
-            <br>
-            <div id="fileDetails"></div>
-            <div id="content-container"></div>
-            <div class="row text-center ">
-                <button class="margin-bottom-lg btn btn-brand waves-attach waves-light" id="saveButton">
-                    <i class="icon">save</i> Save
-                </button>
+            <div class="row" id="file-viewer">
+                <button class="pull-left btn-flat btn btn-block waves-attach waves-dark" onclick="window.location = window.history.back()">&larr; Go Back</button>
+                <br>
+                <br>
+                <div id="fileDetails"></div>
+                <div id="content-container"></div>
+                <div class="row text-center ">
+                    <button class="margin-bottom-lg btn btn-brand waves-attach waves-light" id="saveButton">
+                        <i class="icon">save</i> Save
+                    </button>
+                </div>
             </div>
+        </div>
+        <div class="container tab-pane fade" id="terminal">
+            <h1>Terminal</h1>
+            <div class="terminal-overlay"></div>
+            <textarea class="container col-lg-12 terminal" id="terminal-console"></textarea>
         </div>
     </div>
 </main>
 <script>
-index_JS();
+    index_JS();
 </script>
